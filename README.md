@@ -35,16 +35,20 @@ Existing studies on LLM safety primarily focus on three areas: (1) crafting adve
 │     └── CARTS (Chain Attack Refusal Timing Score)
 
 ├── 7. Behavioral Anomaly Detection Module (New)  
-│     ├── Semantic Drift Detection (S-BERT Vector Distance)  
-│     ├── Instruction Deviation Detection (Rules + LLM Inference)  
-│     └── Tone & Bias Analysis
+│     ├── Rule Matching + Risk Level Mapping
+
 
 ├── 8. Defense Strategy Recommendation Engine (New)  
-│     └── Rule Matching + Risk Level Mapping → JSON-based Suggestions
+│     └── JSON-based Suggestions
 
 └── 9. System Integration and Visualization  
       ├── Visual Reports (Scoring + Analysis)  
       └── Video Demonstration or Terminal Deployment
+      
+└── 10. Future Research
+│     └── Semantic Drift Detection (S-BERT Vector Distance)  
+│     ├── Instruction Deviation Detection (Rules + LLM Inference)
+│     └── Tone & Bias Analysis
 
 ### 1. Seven Security Domains
 
@@ -100,9 +104,12 @@ We propose four metrics to assess LLMs' performance under attack:
 
 A new anomaly detection module is introduced to detect subtle model misbehavior:
 
-- **Semantic Drift Detection**: Using Sentence-BERT to compute embedding similarity between prompt and response to identify semantic deviation.
-- **Instruction Deviation**: Rule-based + LLM-inferred checks to detect cases where instructions are ignored or bypassed.
-- **Tone and Bias Detection**: Sentiment polarity, toxic phrase detection, and positional bias checks.
+- **Contextual Consistency Analysis**: Leverages prompt-response alignment models to measure coherence and detect off-topic or subtly inappropriate shifts.
+- **Instruction Adherence Profiling**: Uses zero-shot instruction classifiers to identify when the model follows alternate interpretations or partial instructions.
+- **Latent Intent Detection**: A contrastive prompting mechanism compares the model's output to a known set of benign and malicious responses to detect implicit harmful intent.
+- **Behavioral Signature Clustering**: Clusters model outputs across different domains to identify recurring patterns of noncompliance, such as repeated stylistic tropes in jailbreaking scenarios.
+
+Each response is automatically labeled into one or more behavior categories (e.g., "Off-topic Compliance", "Latent Evasion", "Ambiguous Adherence", etc.) to enable granular analysis.
 
 ### Classification Output
 
@@ -110,14 +117,17 @@ Each response is classified into behavioral categories: "Compliant", "Drifting",
 
 ## Defense Strategy Recommendation System (New Module)
 
+The defense system proposes context-aware mitigation strategies based on dynamic assessment:
+
 ### Rule-Based Mapping
 
 The defense module maps detected anomalies to recommended countermeasures:
 
-- **Semantic Drift** → Prompt structuring
-- **Instruction Bypass** → Guardrail enforcement
-- **Toxicity** → Response filtering or fine-tuning
-
+- **Latent Behavior Transformation**： Deploy adversarial fine-tuning with contrastive negative examples to reduce susceptibility to subtle manipulations.
+- **Contextual Evasion**： Inject validation sub-queries during generation to verify alignment with the original instruction and flag deviations.
+- **Ambiguity Exploitation**： Use multi-perspective prompting to simulate diverse interpretations and reinforce model robustness to unclear or manipulative wording.
+- **Behavioral Clustering Anomalies**：Incorporate cluster-aware response modulation, where repeated risky patterns are flagged and routed to stricter response-generation policies.
+  
 ### Output Format
 
 Each case yields a JSON configuration and a natural language explanation:
@@ -127,13 +137,13 @@ Each case yields a JSON configuration and a natural language explanation:
   "prompt_id": "12345",
   "risk_level": "High",
   "recommendations": [
-    "Apply response filter",
-    "Rephrase prompt using templates",
-    "Enable moderation API"
+ "Inject validation sub-queries",
+ "Apply adversarial contrastive fine-tuning",
+ "Enable behavioral pattern modulation"
   ]
 }
 ```
-
+This modular defense mapping is intended to support future LLMs with dynamic, self-adaptive defense capabilities, rather than relying solely on pre-defined filters or guardrails.
 ## Results and Case Study
 
 ### Model Benchmarking
@@ -148,9 +158,10 @@ A multi-turn prompt showed how a model initially refused a harmful request, but 
 
 SAFE-LLM demonstrates feasibility in automated security testing and defense planning. However, challenges remain in model generalization, real-time deployment, and adaptive attacks. Future work includes:
 
-- Expanding to multimodal models (text+image)
-- Integrating self-healing LLM mechanisms
-- Real-world red-teaming pipelines
+- Semantic Drift Detection (S-BERT Vector Distance)  
+- Instruction Deviation Detection (Rules + LLM Inference)
+- Tone & Bias Analysis
+
 
 ## Conclusion
 
